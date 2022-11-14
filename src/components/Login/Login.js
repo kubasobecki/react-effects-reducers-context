@@ -37,6 +37,19 @@ const Login = props => {
         isValid: null
     });
 
+    const { isValid: emailIsValid } = emailState;
+    const { isValid: passIsValid } = passState;
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setFormIsValid(emailIsValid && passIsValid);
+        }, 500);
+
+        return () => {
+            clearTimeout(timeout);
+        };
+    }, [emailIsValid, passIsValid]);
+
     const emailChangeHandler = event => {
         dispatchEmail({ type: 'USER_INPUT', val: event.target.value });
     };
@@ -47,8 +60,6 @@ const Login = props => {
 
     const passwordChangeHandler = event => {
         dispatchPass({ type: 'USER_INPUT', val: event.target.value });
-
-        setFormIsValid(emailState.isValid && passState.isValid);
     };
 
     const validatePasswordHandler = () => {
